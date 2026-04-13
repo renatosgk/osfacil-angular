@@ -267,4 +267,11 @@ Gabriel WU Castro - RM560210
 
 Renato Kenji Sugaki - RM559810
 
+--- 
+
+## Vídeo do projeto
+
+Assista à demonstração do projeto no YouTube:  
+https://youtu.be/bFmv3Q1tFgw
+
 ### desenvolvido para disciplina Java Advanced
