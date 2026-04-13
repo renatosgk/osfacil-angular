@@ -260,8 +260,11 @@ DELETE /pagamentos/:id             # Deletar
 7. **Finalizar** - Marcar como concluído
 
 ### Autores do projeto:
+
 Fabio H S Eduardo - RM560416
+
 Gabriel WU Castro - RM560210
+
 Renato Kenji Sugaki - RM559810
 
 ### desenvolvido para disciplina Java Advanced
