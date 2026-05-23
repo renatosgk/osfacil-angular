@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://osfacil.onrender.com'
+  apiBaseUrl: 'https://osfacil.onrender.com',
 };

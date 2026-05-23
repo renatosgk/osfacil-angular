@@ -1,0 +1,70 @@
+<div class="chat-wrapper">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-identity">
+      <div class="chat-avatar">
+        <img src="logo.png" alt="OS Fácil" (error)="$any($event.target).style.display='none'" />
+      </div>
+      <div>
+        <p class="chat-title">Assistente de Mecânica</p>
+        <p class="chat-subtitle">Powered by Groq · llama3-8b</p>
+      </div>
+    </div>
+    <button class="btn-clear" (click)="chatService.clearMessages()" type="button">
+      Limpar conversa
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div #messagesContainer class="chat-messages">
+    @for (msg of chatService.messages(); track $index) {
+      <div class="msg-row" [class.msg-row--user]="msg.role === 'user'">
+        @if (msg.role === 'assistant') {
+          <div class="msg-avatar">
+            <img src="logo.png" alt="OS Fácil" (error)="$any($event.target).style.display='none'" />
+          </div>
+        }
+        <div class="msg-bubble" [class.msg-bubble--user]="msg.role === 'user'" [class.msg-bubble--ai]="msg.role === 'assistant'">
+          <p class="msg-content">{{ msg.content }}</p>
+          <span class="msg-time">{{ msg.timestamp | date: 'HH:mm' }}</span>
+        </div>
+      </div>
+    }
+
+    @if (chatService.isLoading()) {
+      <div class="msg-row">
+        <div class="msg-avatar">IA</div>
+        <div class="msg-bubble msg-bubble--ai">
+          <div class="typing-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <div class="chat-input-row">
+      <textarea
+        [(ngModel)]="inputText"
+        (keydown)="onKeyDown($event)"
+        [disabled]="chatService.isLoading()"
+        placeholder="Descreva o problema ou faça sua pergunta..."
+        rows="2"
+        class="chat-textarea"
+      ></textarea>
+      <button
+        (click)="send()"
+        [disabled]="!inputText.trim() || chatService.isLoading()"
+        class="btn-send"
+        type="button"
+      >
+        Enviar
+      </button>
+    </div>
+    <p class="chat-hint">Enter para enviar &nbsp;·&nbsp; Shift+Enter para nova linha</p>
+  </div>
+</div>

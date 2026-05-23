@@ -1,277 +1,243 @@
-# OSFácil - Sistema de Gestão de Ordem de Serviços
+# OS Fácil — Frontend (Angular)
 
-Sistema web moderno desenvolvido em **Angular 21** para gestão completa de ordens de serviço, clientes, funcionários, produtos, veículos e pagamentos.
-
----
-
-## Funcionalidades Principais
-
-**Autenticação Segura** - Sistema de login com JWT e controle de acesso por função
-**Gestão de Ordens de Serviço** - Criar, editar, visualizar e acompanhar ordens
-**Gerenciamento de Clientes** - CRUD completo com histórico de serviços
-**Administração de Funcionários** - Controle de equipe e atribuições
-**Catálogo de Produtos/Itens** - Gestão de inventário e preços
-**Registro de Veículos** - Vinculação de veículos aos clientes
-**Gestão de Pagamentos** - Rastreamento e processamento de pagamentos
-**Dashboard** - Visão geral com métricas principais
-**Design Responsivo** - Funciona em desktop, tablet e mobile
+Interface web para gestão de ordens de serviço em oficinas automotivas.  
+Desenvolvida com **Angular 21**, componentes standalone, **Angular Signals** e **TailwindCSS 4**.
 
 ---
 
-## 🛠️ Requisitos
+## Tecnologias
 
-Antes de começar, certifique-se de ter instalado:
-
-- **Node.js** v18.0.0 ou superior
-- **npm** v9.0.0 ou superior (incluído com Node.js)
-- **Git** para controle de versão
-
-Verificar versão instalada:
-```bash
-node --version
-npm --version
-```
+| Tecnologia | Versão | Finalidade |
+|---|---|---|
+| Angular | 21.2.0 | Framework principal |
+| TypeScript | 5.9 | Linguagem tipada |
+| RxJS | 7.8 | Programação reativa |
+| TailwindCSS | 4.x | Estilização utilitária |
+| Angular Signals | — | Reatividade granular de estado |
+| Angular Router | — | Navegação e guards de rota |
+| Angular Forms | — | Formulários reativos |
 
 ---
 
-## Instalação e Configuração
+## Pré-requisitos
 
-### 1. Clone o Repositório
+- **Node.js** v18+ (`node --version`)
+- **npm** v9+ (`npm --version`)
+- **Angular CLI** v21+ (`npm i -g @angular/cli`)
+- Backend **OS Fácil API** rodando em `http://localhost:8081`
+
+---
+
+## Instalação
 
 ```bash
-git clone <seu-repositorio>
-cd osfacil
-```
+# 1. Clone o repositório
+git clone <url-do-repositorio>
+cd ordem-servico-angular
 
-### 2. Instale as Dependências
-
-```bash
+# 2. Instale as dependências
 npm install
 ```
 
-Isso instalará todas as dependências do projeto listadas em `package.json`.
+---
 
-### 3. Configure o Ambiente
+## Executando em desenvolvimento
 
-O projeto usa arquivos de ambiente para configurações:
-
-- **Development**: `src/environments/environment.development.ts`
-- **Production**: `src/environments/environment.production.ts`
-
-Exemplo de configuração:
-
-```typescript
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:4200/api'
-};
+```bash
+npm start
+# ou
+ng serve
 ```
 
-### 4. Configure o Proxy (Desenvolvimento)
+A aplicação abrirá em `http://localhost:4200`  
+O hot-reload recarrega automaticamente ao salvar arquivos.
 
-O arquivo `proxy.conf.json` redireciona requisições da API:
+---
+
+## Configuração do proxy
+
+O arquivo `proxy.conf.json` redireciona todas as chamadas `/api/*` para o backend,  
+evitando problemas de CORS em desenvolvimento:
 
 ```json
 {
   "/api": {
-    "target": "https://osfacil.onrender.com",
+    "target": "http://localhost:8081",
     "secure": false,
     "changeOrigin": true,
-    "pathRewrite": {
-      "^/api": ""
-    }
+    "pathRewrite": { "^/api": "" }
   }
 }
 ```
-## Executando a Aplicação
 
-### Modo Desenvolvimento
+> Se mudar a porta do backend, atualize o `target` aqui.
 
-```bash
-ng serve --open
-# ou
-npm start
-```
+---
 
-A aplicação abrirá automaticamente em `http://localhost:4200`
+## Primeiro acesso
 
-**Observação**: O servidor de desenvolvimento ativa automaticamente hot-reload, recarregando a página quando você faz alterações no código.
+1. Suba o backend — ele criará automaticamente o admin padrão
+2. Acesse `http://localhost:4200`
+3. Faça login com:
+   - **E-mail:** `admin@osfacil.com`
+   - **Senha:** `Admin@123`
+4. Para criar funcionários e admins, clique nas abas **"Funcionário"** ou **"Admin"** na tela de login enquanto estiver logado como administrador
 
+---
 
-##  Estrutura do Projeto
+## Funcionalidades por perfil
+
+### Cliente (`ROLE_CLIENTE`)
+- Ver suas próprias Ordens de Serviço
+- Consultar veículos
+- Registrar pagamentos
+- Usar o Assistente de Mecânica (IA)
+
+### Funcionário (`ROLE_FUNCIONARIO`)
+- Dashboard com métricas gerais
+- Gestão completa de OS (criar, editar, alterar status, exportar PDF)
+- Gerenciar clientes, veículos, produtos, itens e pagamentos
+- Assistente de mecânica com IA
+
+### Administrador (`ROLE_ADMIN`)
+- Tudo do funcionário
+- Cadastrar novos funcionários
+- Cadastrar novos administradores
+
+---
+
+## Rotas da aplicação
+
+| Rota | Acesso | Descrição |
+|---|---|---|
+| `/login` | Público | Login, cadastro de cliente, funcionário e admin |
+| `/dashboard` | Staff | Métricas e visão geral |
+| `/ordem-servicos` | Todos | Lista de OS |
+| `/ordem-servicos/:id` | Todos | Detalhes, itens e pagamentos de uma OS |
+| `/clientes` | Staff | CRUD de clientes |
+| `/funcionarios` | Staff | CRUD de funcionários |
+| `/veiculos` | Todos | CRUD de veículos |
+| `/produtos` | Staff | CRUD de produtos |
+| `/item-produtos` | Staff | Itens vinculados às OS |
+| `/pagamentos` | Todos | Listagem e registro de pagamentos |
+| `/assistente` | Todos | Chat com assistente de mecânica |
+| `/registro-funcionario` | Admin | Formulário de cadastro de funcionário |
+| `/registro-admin` | Admin | Formulário de cadastro de administrador |
+
+---
+
+## Estrutura do projeto
 
 ```
 src/
 ├── app/
 │   ├── core/
-│   │   ├── services/          # Serviços reutilizáveis
-│   │   │   ├── auth.service.ts
-│   │   │   ├── cliente.service.ts
-│   │   │   ├── ordem-servico.service.ts
-│   │   │   ├── produto.service.ts
-│   │   │   ├── funcionario.service.ts
-│   │   │   ├── veiculo.service.ts
-│   │   │   ├── pagamento.service.ts
-│   │   │   └── loading.service.ts
-│   │   ├── guards/            # Guards de acesso
-│   │   │   └── auth.guard.ts
-│   │   ├── interceptors/      # HTTP interceptors
-│   │   │   ├── auth.interceptor.ts
-│   │   │   ├── api-fallback.interceptor.ts
-│   │   │   └── loading.interceptor.ts
-│   │   └── constants/         # Constantes da aplicação
-│   │       └── api.constants.ts
+│   │   ├── constants/
+│   │   │   └── api.constants.ts        # URL base da API
+│   │   ├── guards/
+│   │   │   ├── auth.guard.ts           # Redireciona não autenticados
+│   │   │   └── role.guard.ts           # staffGuard e adminGuard
+│   │   ├── interceptors/
+│   │   │   └── auth.interceptor.ts     # Injeta Bearer token em todas as requisições
+│   │   └── services/
+│   │       ├── auth.service.ts         # Login, logout, signals de role
+│   │       ├── storage.service.ts      # localStorage com prefixo osfacil_
+│   │       ├── notification.service.ts # Toast de sucesso/erro
+│   │       ├── ordem-servico.service.ts
+│   │       ├── cliente.service.ts
+│   │       ├── funcionario.service.ts
+│   │       ├── veiculo.service.ts
+│   │       ├── produto.service.ts
+│   │       ├── item-produto.service.ts
+│   │       └── pagamento.service.ts
 │   │
-│   ├── features/              # Módulos de funcionalidades
-│   │   ├── auth/              # Autenticação
-│   │   ├── dashboard/         # Dashboard principal
-│   │   ├── clientes/          # Gestão de clientes
-│   │   ├── funcionarios/      # Gestão de funcionários
-│   │   ├── ordem-servicos/    # Gestão de ordens
-│   │   ├── produtos/          # Catálogo de produtos
-│   │   ├── item-produtos/     # Itens de ordem
-│   │   ├── veiculos/          # Gestão de veículos
-│   │   ├── pagamentos/        # Gestão de pagamentos
-│   │   └── layout/            # Layout principal
+│   ├── features/
+│   │   ├── auth/                       # Login + cadastros (4 abas)
+│   │   ├── layout/                     # Shell com sidebar reativa
+│   │   ├── dashboard/                  # Cards de métricas (staff)
+│   │   ├── ordem-servicos/             # Lista e detalhes de OS
+│   │   ├── clientes/                   # CRUD de clientes
+│   │   ├── funcionarios/               # CRUD de funcionários
+│   │   ├── veiculos/                   # CRUD de veículos
+│   │   ├── produtos/                   # CRUD de produtos
+│   │   ├── item-produtos/              # Itens de OS
+│   │   ├── pagamentos/                 # Pagamentos
+│   │   ├── assistente/                 # Chat com IA
+│   │   ├── registro-funcionario/       # Formulário de novo funcionário
+│   │   └── registro-admin/             # Formulário de novo admin
 │   │
-│   ├── shared/                # Componentes compartilhados
-│   │   ├── components/        # Componentes reutilizáveis
-│   │   ├── interfaces/        # Interfaces TypeScript
-│   │   └── utils/             # Funções utilitárias
+│   ├── shared/
+│   │   ├── components/
+│   │   │   └── status-badge/           # Badge colorido de status da OS
+│   │   ├── interfaces/
+│   │   │   └── entities.ts             # Interfaces TypeScript de todas as entidades
+│   │   └── utils/
+│   │       └── http-error.util.ts      # Extrai mensagem de erro da API
 │   │
-│   ├── app.config.ts          # Configuração global da app
-│   ├── app.routes.ts          # Definição de rotas
-│   └── app.ts                 # Componente raiz
+│   ├── app.routes.ts                   # Definição de rotas com guards
+│   └── app.config.ts                   # Configuração global (HTTP, Router)
 │
-├── styles.scss                # Estilos globais
-├── main.ts                    # Arquivo de entrada
-└── environments/              # Configurações por ambiente
-    ├── environment.ts
-    ├── environment.development.ts
-    └── environment.production.ts
+├── public/
+│   ├── logo.png                        # Logo da oficina
+│   ├── mascote.png                     # Mascote — tela de login
+│   └── mascote-logo.png                # Mascote — cadastro de cliente
+│
+└── proxy.conf.json                     # Proxy de desenvolvimento para o backend
 ```
 
 ---
 
-## Autenticação e Segurança
+## Arquitetura e padrões
 
-### Sistema de Login
-
-A aplicação utiliza autenticação baseada em **JWT (JSON Web Token)**:
-
-1. Usuário faz login com email/CPF e senha
-2. Servidor valida credenciais e retorna um token JWT
-3. Token é armazenado em localStorage
-4. Token é enviado a cada requisição via header `Authorization`
-5. Servidor valida token e retorna dados solicitados
-
-### Tipos de Usuários
-
-- **Admin** - Acesso total ao sistema
-- **Funcionário** - Acesso restrito aos registros da equipe
-- **Cliente** - Acesso apenas a seus próprios pedidos (se aplicável)
-
-
-### Armazenamento Seguro
-
-- **Token**: Armazenado em localStorage com prefix `osfacil_token`
-- **Usuário**: Dados do usuário armazenados em localStorage
-- **Logout**: Limpa todos os dados ao fazer logout
-
----
-
-## Integração com API
-
-### URL Base da API
-
-- **Desenvolvimento**: `http://localhost:4200/api` (via proxy)
-- **Produção**: `https://osfacil.onrender.com`
-
-### Endpoints Principais
-
+### Angular Signals
+O estado de autenticação usa sinais reativos (`signal`, `computed`):
 ```typescript
-// Autenticação
-POST   /login                      # Fazer login
-POST   /register                   # Registrar novo cliente
-POST   /register-funcionario       # Registrar novo funcionário
+private readonly _role = signal<string | null>(null);
+readonly isCliente  = computed(() => this._role() === 'ROLE_CLIENTE');
+readonly isStaff    = computed(() => this.isFuncionario() || this.isAdmin());
+```
+Isso garante que menus, guards e chamadas de API reajam instantaneamente à mudança de role após o login.
 
-// Clientes
-GET    /clientes                   # Listar clientes
-POST   /clientes                   # Criar cliente
-GET    /clientes/:id               # Obter detalhes
-PUT    /clientes/:id               # Atualizar cliente
-DELETE /clientes/:id               # Deletar cliente
+### Guards de rota
+- `authGuard` — redireciona para `/login` se não autenticado
+- `staffGuard` — redireciona para `/ordem-servicos` se não for staff
+- `adminGuard` — redireciona para `/ordem-servicos` se não for admin
 
-// Funcionários
-GET    /funcionarios               # Listar funcionários
-POST   /funcionarios               # Criar funcionário
-GET    /funcionarios/:id           # Obter detalhes
-PUT    /funcionarios/:id           # Atualizar
-DELETE /funcionarios/:id           # Deletar
+### Proteção em componentes
+Chamadas a endpoints restritos são protegidas no nível do componente:
+```typescript
+if (this.auth.isStaff()) {
+  this.clienteService.list().subscribe(...);
+}
+```
 
-// Ordens de Serviço
-GET    /ordem-servicos             # Listar ordens
-POST   /ordem-servicos             # Criar ordem
-GET    /ordem-servicos/:id         # Obter detalhes
-PUT    /ordem-servicos/:id         # Atualizar ordem
-DELETE /ordem-servicos/:id         # Deletar ordem
-
-// Produtos
-GET    /produtos                   # Listar produtos
-POST   /produtos                   # Criar produto
-PUT    /produtos/:id               # Atualizar
-DELETE /produtos/:id               # Deletar
-
-// Itens de Produtos
-GET    /item-produtos              # Listar itens
-POST   /item-produtos              # Adicionar item
-
-// Veículos
-GET    /veiculos                   # Listar veículos
-POST   /veiculos                   # Registrar veículo
-PUT    /veiculos/:id               # Atualizar
-DELETE /veiculos/:id               # Deletar
-
-// Pagamentos
-GET    /pagamentos                 # Listar pagamentos
-POST   /pagamentos                 # Registrar pagamento
-PUT    /pagamentos/:id             # Atualizar pagamento
-DELETE /pagamentos/:id             # Deletar
+### HATEOAS
+Respostas do backend retornam `CollectionModel` com `_embedded`.  
+Os serviços extraem o array automaticamente:
+```typescript
+map(r => r?._embedded ? r._embedded[Object.keys(r._embedded)[0]] : [])
 ```
 
 ---
 
-## 📱 Uso da Aplicação
+## Build para produção
 
-### Primeiro Acesso
+```bash
+ng build --configuration production
+```
 
-1. Acesse a página de login
-2. Entre com suas credenciais (email/CPF e senha)
-3. Será redirecionado para o Dashboard
+Os arquivos gerados ficam em `dist/osfacil/`.
 
-### Fluxo Típico de Ordem de Serviço
+---
 
-1. **Criar Ordem** - Novo → Ordem de Serviço
-2. **Adicionar Cliente** - Selecione um cliente ou crie novo
-3. **Adicionar Itens** - Selecione produtos/serviços
-4. **Definir Valor** - Preço é calculado automaticamente
-5. **Atribuir Funcionário** - Quem executará o serviço
-6. **Registrar Pagamento** - Após conclusão
-7. **Finalizar** - Marcar como concluído
+## Autores
 
-### Autores do projeto:
+| Nome | RM |
+|---|---|
+| Fabio H S Eduardo | 560416 |
+| Gabriel WU Castro | 560210 |
+| Renato Kenji Sugaki | 559810 |
 
-Fabio H S Eduardo - RM560416
+Projeto desenvolvido para a disciplina **Java Advanced — FIAP**
 
-Gabriel WU Castro - RM560210
-
-Renato Kenji Sugaki - RM559810
-
---- 
-
-## Vídeo do projeto
-
-Assista à demonstração do projeto no YouTube:  
-https://youtu.be/bFmv3Q1tFgw
-
-### desenvolvido para disciplina Java Advanced
+**Vídeo de demonstração:** https://youtu.be/bFmv3Q1tFgw

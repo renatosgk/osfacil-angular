@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 import { ClienteService } from '../../core/services/cliente.service';
 import { FuncionarioService } from '../../core/services/funcionario.service';
 import { NotificationService } from '../../core/services/notification.service';
@@ -25,6 +26,7 @@ export class OrdemServicosComponent {
   private readonly funcionarioService = inject(FuncionarioService);
   private readonly fb = inject(FormBuilder);
   private readonly notification = inject(NotificationService);
+  readonly auth = inject(AuthService);
 
   ordens: OrdemServico[] = [];
   filteredOrdens: OrdemServico[] = [];
@@ -54,13 +56,15 @@ export class OrdemServicosComponent {
 
   private loadAll(): void {
     this.load();
-    this.clienteService.list().subscribe({ next: (items) => (this.clientes = items) });
+    if (this.auth.isStaff()) {
+      this.clienteService.list().subscribe({ next: (items) => (this.clientes = items) });
+      this.funcionarioService.list().subscribe({ next: (items) => (this.funcionarios = items) });
+    }
     this.veiculoService.list().subscribe({ next: (items) => (this.veiculos = items) });
-    this.funcionarioService.list().subscribe({ next: (items) => (this.funcionarios = items) });
   }
 
   load(): void {
-    this.service.list().subscribe({
+    this.service.listMinhas().subscribe({
       next: (items) => {
         this.ordens = items;
         this.applyFilter();

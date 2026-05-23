@@ -1,7 +1,7 @@
 {
   "/api": {
-    "target": "https://osfacil.onrender.com",
-    "secure": true,
+    "target": "http://localhost:8081",
+    "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
       "^/api": ""

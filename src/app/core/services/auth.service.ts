@@ -2,24 +2,35 @@ import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { API_BASE_URL } from '../constants/api.constants';
-import { AuthResponse, LoginPayload, RegisterPayload } from '../../shared/interfaces/entities';
+import { AuthResponse, LoginPayload, RegisterAdminPayload, RegisterFuncionarioPayload, RegisterPayload } from '../../shared/interfaces/entities';
 import { StorageService } from './storage.service';
 
 type AuthApiResponse = AuthResponse & {
   tokenAcesso?: string;
   nome?: string;
   email?: string;
+  role?: string;
 };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly authenticated = signal(false);
+  private readonly _role = signal<string | null>(null);
+
   readonly isAuthenticated = computed(() => this.authenticated());
+  readonly userRole = this._role.asReadonly();
+
+  readonly isCliente    = computed(() => this._role() === 'ROLE_CLIENTE');
+  readonly isFuncionario = computed(() => this._role() === 'ROLE_FUNCIONARIO');
+  readonly isAdmin      = computed(() => this._role() === 'ROLE_ADMIN');
+  readonly isStaff      = computed(() => this.isFuncionario() || this.isAdmin());
 
   constructor(
     private readonly http: HttpClient,
     private readonly storageService: StorageService
   ) {
+    const stored = this.storageService.getUser<{ role?: string }>();
+    this._role.set(stored?.role ?? null);
     this.authenticated.set(!!this.storageService.getToken());
   }
 
@@ -37,14 +48,12 @@ export class AuthService {
         }
 
         this.storageService.setToken(token);
-        if (response.usuario) {
-          this.storageService.setUser(response.usuario);
-        } else {
-          this.storageService.setUser({
-            nome: response.nome,
-            email: response.email,
-          });
-        }
+        const userData = response.usuario
+          ? { ...response.usuario, role: response.role }
+          : { nome: response.nome, email: response.email, role: response.role };
+
+        this.storageService.setUser(userData);
+        this._role.set(response.role ?? null);
         this.authenticated.set(true);
       })
     );
@@ -65,20 +74,25 @@ export class AuthService {
     );
   }
 
-  registerFuncionario(payload: RegisterPayload) {
+  registerFuncionario(payload: RegisterFuncionarioPayload) {
     return this.http.post(
       `${API_BASE_URL}/register-funcionario`,
-      {
-        nome: payload.nome,
-        email: payload.email,
-        password: payload.senha,
-      },
+      payload,
+      { responseType: 'text' }
+    );
+  }
+
+  registerAdmin(payload: RegisterAdminPayload) {
+    return this.http.post(
+      `${API_BASE_URL}/register-admin`,
+      payload,
       { responseType: 'text' }
     );
   }
 
   logout(): void {
     this.storageService.clearAll();
+    this._role.set(null);
     this.authenticated.set(false);
   }
 

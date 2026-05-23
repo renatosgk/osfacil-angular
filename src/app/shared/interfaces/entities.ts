@@ -85,6 +85,28 @@ export interface RegisterPayload {
   senha: string;
 }
 
+export interface RegisterFuncionarioPayload {
+  nome: string;
+  email: string;
+  cpf: string;
+  login: string;
+  password: string;
+  salario: number;
+  cargo?: string;
+  especialidade?: string;
+  telefone?: string;
+}
+
+export interface RegisterAdminPayload {
+  nome: string;
+  email: string;
+  cpf: string;
+  login: string;
+  password: string;
+  salario: number;
+  cargo?: string;
+}
+
 export interface AuthResponse {
   token: string;
   usuario?: {

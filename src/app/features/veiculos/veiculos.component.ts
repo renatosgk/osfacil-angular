@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
 import { ClienteService } from '../../core/services/cliente.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { VeiculoService } from '../../core/services/veiculo.service';
@@ -19,6 +20,7 @@ export class VeiculosComponent {
   private readonly clienteService = inject(ClienteService);
   private readonly fb = inject(FormBuilder);
   private readonly notification = inject(NotificationService);
+  readonly auth = inject(AuthService);
 
   veiculos: Veiculo[] = [];
   clientes: Cliente[] = [];
@@ -38,10 +40,12 @@ export class VeiculosComponent {
 
   private loadAll(): void {
     this.load();
-    this.clienteService.list().subscribe({
-      next: (items) => (this.clientes = items),
-      error: (error) => this.notification.error(parseApiError(error)),
-    });
+    if (this.auth.isStaff()) {
+      this.clienteService.list().subscribe({
+        next: (items) => (this.clientes = items),
+        error: (error) => this.notification.error(parseApiError(error)),
+      });
+    }
   }
 
   load(): void {
