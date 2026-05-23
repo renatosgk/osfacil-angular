@@ -10,6 +10,7 @@ export interface Cliente extends ApiEntity {
   nome?: string;
   email?: string;
   telefone?: string;
+  cpf?: string;
   documento?: string;
   endereco?: string;
 }
