@@ -22,11 +22,14 @@ export abstract class BaseCrudService<T extends { id?: number }> {
 
     return this.http.get<any>(`${this.baseUrl}/${this.endpoint}`, { params: httpParams }).pipe(
       map(r => {
+        if (Array.isArray(r)) return r as T[];
         if (r?._embedded) {
           const key = Object.keys(r._embedded)[0];
-          return r._embedded[key] as T[];
+          const value = r._embedded[key];
+          return (Array.isArray(value) ? value : []) as T[];
         }
-        return Array.isArray(r) ? r : [];
+        if (r?.content && Array.isArray(r.content)) return r.content as T[];
+        return [];
       })
     );
   }
