@@ -33,16 +33,20 @@
         <input class="input" formControlName="email" type="email" placeholder="email@exemplo.com" />
       </label>
       <label class="field">
-        <span class="field-label">Telefone</span>
+        <span class="field-label">Telefone <span class="required">*</span></span>
         <input class="input" formControlName="telefone" placeholder="(00) 00000-0000" />
       </label>
       <label class="field">
-        <span class="field-label">CPF / CNPJ</span>
-        <input class="input" formControlName="documento" placeholder="000.000.000-00" />
+        <span class="field-label">CPF <span class="required">*</span></span>
+        <input class="input" formControlName="cpf" placeholder="000.000.000-00" />
       </label>
       <label class="field field--wide">
-        <span class="field-label">Endereço</span>
+        <span class="field-label">Endereço <span class="required">*</span></span>
         <input class="input" formControlName="endereco" placeholder="Rua, número, bairro, cidade" />
+      </label>
+      <label class="field">
+        <span class="field-label">Senha <span class="required">*</span></span>
+        <input class="input" formControlName="senha" type="password" placeholder="Senha de acesso do cliente" />
       </label>
     </form>
 

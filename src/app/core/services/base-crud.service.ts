@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { API_BASE_URL } from '../constants/api.constants';
 
 export abstract class BaseCrudService<T extends { id?: number }> {
@@ -19,7 +20,15 @@ export abstract class BaseCrudService<T extends { id?: number }> {
       });
     }
 
-    return this.http.get<T[]>(`${this.baseUrl}/${this.endpoint}`, { params: httpParams });
+    return this.http.get<any>(`${this.baseUrl}/${this.endpoint}`, { params: httpParams }).pipe(
+      map(r => {
+        if (r?._embedded) {
+          const key = Object.keys(r._embedded)[0];
+          return r._embedded[key] as T[];
+        }
+        return Array.isArray(r) ? r : [];
+      })
+    );
   }
 
   getById(id: number): Observable<T> {

@@ -25,9 +25,10 @@ export class ClientesComponent {
   readonly form = this.fb.group({
     nome: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    telefone: [''],
-    documento: [''],
-    endereco: [''],
+    telefone: ['', Validators.required],
+    cpf: ['', Validators.required],
+    endereco: ['', Validators.required],
+    senha: ['', Validators.required],
   });
 
   readonly searchForm = this.fb.group({
@@ -64,15 +65,25 @@ export class ClientesComponent {
       nome: String(item.nome ?? ''),
       email: String(item.email ?? ''),
       telefone: String(item.telefone ?? ''),
-      documento: String(item.documento ?? ''),
+      cpf: String(item.cpf ?? item.documento ?? ''),
       endereco: String(item.endereco ?? ''),
+      senha: '',
     });
   }
 
   save(): void {
     if (this.form.invalid) return;
 
-    const payload = this.form.getRawValue();
+    const raw = this.form.getRawValue();
+    const payload = {
+      nome: raw.nome,
+      email: raw.email,
+      cpf: (raw.cpf ?? '').replace(/\D/g, ''),
+      telefone: (raw.telefone ?? '').replace(/\D/g, ''),
+      endereco: raw.endereco,
+      senha: raw.senha,
+    };
+
     const request = this.editingId
       ? this.service.update(this.editingId, payload)
       : this.service.create(payload);
