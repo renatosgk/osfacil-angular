@@ -145,7 +145,7 @@ export class OrdemServicoDetalheComponent {
   }
 
   getProdutoValor(id?: number): number {
-    return Number(this.produtos.find((p) => p.id === id)?.valor ?? 0);
+    return Number(this.produtos.find((p) => p.id === id)?.preco ?? 0);
   }
 
   getStatusLabel(status: unknown): string {
