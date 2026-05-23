@@ -240,4 +240,6 @@ Os arquivos gerados ficam em `dist/osfacil/`.
 
 Projeto desenvolvido para a disciplina **Java Advanced — FIAP**
 
+**Aplicação em produção:** https://osfacil-angular.vercel.app
+
 **Vídeo de demonstração:** https://youtu.be/bFmv3Q1tFgw
