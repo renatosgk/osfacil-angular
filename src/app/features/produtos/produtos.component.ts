@@ -23,9 +23,8 @@ export class ProdutosComponent {
 
   readonly form = this.fb.group({
     nome: ['', Validators.required],
-    descricao: [''],
-    valor: [0, Validators.required],
-    estoque: [0],
+    preco: [null as number | null, [Validators.required, Validators.min(0.01)]],
+    quantidade: [0, [Validators.required, Validators.min(0)]],
   });
 
   constructor() {
@@ -43,9 +42,8 @@ export class ProdutosComponent {
     this.editingId = item.id ?? null;
     this.form.patchValue({
       nome: String(item.nome ?? ''),
-      descricao: String(item.descricao ?? ''),
-      valor: Number(item.valor ?? 0),
-      estoque: Number(item.estoque ?? 0),
+      preco: item.preco ?? null,
+      quantidade: Number(item.quantidade ?? 0),
     });
   }
 
@@ -83,6 +81,6 @@ export class ProdutosComponent {
 
   resetForm(): void {
     this.editingId = null;
-    this.form.reset({ valor: 0, estoque: 0 });
+    this.form.reset({ preco: null, quantidade: 0 });
   }
 }

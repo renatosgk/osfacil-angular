@@ -26,19 +26,40 @@
     <form [formGroup]="form" class="form-grid">
       <label class="field">
         <span class="field-label">Nome <span class="required">*</span></span>
-        <input class="input" formControlName="nome" placeholder="Nome completo" />
+        <input id="func-nome" name="func-nome" class="input" formControlName="nome" placeholder="Nome completo" />
       </label>
-      <label class="field">
+
+      <label class="field" for="func-email">
         <span class="field-label">E-mail <span class="required">*</span></span>
-        <input class="input" formControlName="email" type="email" placeholder="email@exemplo.com" />
+        <input id="func-email" name="func-email" class="input" formControlName="email" type="email" placeholder="email@exemplo.com" />
       </label>
-      <label class="field">
-        <span class="field-label">Telefone</span>
-        <input class="input" formControlName="telefone" placeholder="(00) 00000-0000" />
+
+      <label class="field" for="func-cpf">
+        <span class="field-label">CPF <span class="required">*</span></span>
+        <input id="func-cpf" name="func-cpf" class="input" formControlName="cpf" placeholder="000.000.000-00" />
       </label>
-      <label class="field">
-        <span class="field-label">Cargo / Especialidade</span>
-        <input class="input" formControlName="cargo" placeholder="Ex: Mecânico, Eletricista, Gerente..." />
+
+      <label class="field" for="func-login">
+        <span class="field-label">Login <span class="required">*</span></span>
+        <input id="func-login" name="func-login" class="input" formControlName="login" placeholder="Login de acesso" autocomplete="username" />
+      </label>
+
+      <label class="field" for="func-senha">
+        <span class="field-label">Senha <span class="required">*</span></span>
+        <input id="func-senha" name="func-senha" class="input" formControlName="senha" type="password" placeholder="Senha de acesso" autocomplete="new-password" />
+      </label>
+
+      <label class="field" for="func-salario">
+        <span class="field-label">Salário (R$) <span class="required">*</span></span>
+        <input id="func-salario" name="func-salario" class="input" formControlName="salario" type="number" step="0.01" min="0.01" placeholder="0,00" />
+      </label>
+
+      <label class="field" for="func-role">
+        <span class="field-label">Perfil <span class="required">*</span></span>
+        <select id="func-role" name="func-role" class="input" formControlName="role">
+          <option value="ROLE_FUNCIONARIO">Funcionário</option>
+          <option value="ROLE_ADMIN">Administrador</option>
+        </select>
       </label>
     </form>
 
@@ -63,8 +84,9 @@
             <th>ID</th>
             <th>Nome</th>
             <th>E-mail</th>
-            <th>Telefone</th>
-            <th>Cargo</th>
+            <th>Login</th>
+            <th>Perfil</th>
+            <th>Salário</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -79,10 +101,11 @@
                 </div>
               </td>
               <td>{{ item.email }}</td>
-              <td>{{ item.telefone || '—' }}</td>
+              <td>{{ item.login || '—' }}</td>
               <td>
-                <span class="badge">{{ item.cargo || 'Não definido' }}</span>
+                <span class="badge">{{ item.role === 'ROLE_ADMIN' ? 'Admin' : 'Funcionário' }}</span>
               </td>
+              <td>{{ item.salario != null ? ('R$ ' + item.salario) : '—' }}</td>
               <td>
                 <div class="row-actions">
                   <button class="btn-ghost btn-sm" (click)="edit(item)" type="button">Editar</button>
@@ -93,7 +116,7 @@
           }
           @if (funcionarios.length === 0) {
             <tr>
-              <td colspan="6" class="empty-row">Nenhum funcionário cadastrado.</td>
+              <td colspan="7" class="empty-row">Nenhum funcionário cadastrado.</td>
             </tr>
           }
         </tbody>

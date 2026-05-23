@@ -335,12 +335,12 @@ type TabId = 'login' | 'cliente' | 'funcionario' | 'admin';
           @if (activeTab() === 'login') {
             <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
               <div class="field">
-                <label>E-mail</label>
-                <input formControlName="email" type="email" placeholder="seu@email.com" />
+                <label for="login-email">E-mail</label>
+                <input id="login-email" name="login-email" formControlName="email" type="email" placeholder="seu@email.com" autocomplete="email" />
               </div>
               <div class="field">
-                <label>Senha</label>
-                <input formControlName="senha" type="password" placeholder="••••••••" />
+                <label for="login-senha">Senha</label>
+                <input id="login-senha" name="login-senha" formControlName="senha" type="password" placeholder="••••••••" autocomplete="current-password" />
               </div>
               <button class="btn-submit" type="submit" [disabled]="loginForm.invalid">
                 Entrar →
@@ -352,38 +352,38 @@ type TabId = 'login' | 'cliente' | 'funcionario' | 'admin';
             <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
               <div class="form-grid-2">
                 <div class="field">
-                  <label>Nome completo</label>
-                  <input formControlName="nome" placeholder="João Silva" />
+                  <label for="reg-nome">Nome completo</label>
+                  <input id="reg-nome" name="reg-nome" formControlName="nome" placeholder="João Silva" autocomplete="name" />
                 </div>
                 <div class="field">
-                  <label>CPF</label>
-                  <input formControlName="cpf" inputmode="numeric" maxlength="14"
+                  <label for="reg-cpf">CPF</label>
+                  <input id="reg-cpf" name="reg-cpf" formControlName="cpf" inputmode="numeric" maxlength="14"
                     placeholder="000.000.000-00" (input)="onCpfInput('cliente')" />
                 </div>
               </div>
               <div class="field">
-                <label>E-mail</label>
-                <input formControlName="email" type="email" placeholder="seu@email.com" />
+                <label for="reg-email">E-mail</label>
+                <input id="reg-email" name="reg-email" formControlName="email" type="email" placeholder="seu@email.com" autocomplete="email" />
               </div>
               <div class="form-grid-2">
                 <div class="field">
-                  <label>Telefone</label>
-                  <input formControlName="telefone" inputmode="numeric" maxlength="12"
+                  <label for="reg-telefone">Telefone</label>
+                  <input id="reg-telefone" name="reg-telefone" formControlName="telefone" inputmode="numeric" maxlength="12"
                     placeholder="11999999999" (input)="onTelefoneInput('cliente')" />
                 </div>
                 <div class="field">
-                  <label>Endereço</label>
-                  <input formControlName="endereco" placeholder="Rua, número" />
+                  <label for="reg-endereco">Endereço</label>
+                  <input id="reg-endereco" name="reg-endereco" formControlName="endereco" placeholder="Rua, número" />
                 </div>
               </div>
               <div class="form-grid-2">
                 <div class="field">
-                  <label>Senha</label>
-                  <input formControlName="senha" type="password" placeholder="••••••••" />
+                  <label for="reg-senha">Senha</label>
+                  <input id="reg-senha" name="reg-senha" formControlName="senha" type="password" placeholder="••••••••" autocomplete="new-password" />
                 </div>
                 <div class="field">
-                  <label>Confirmar senha</label>
-                  <input formControlName="confirmarSenha" type="password" placeholder="••••••••" />
+                  <label for="reg-confirmar">Confirmar senha</label>
+                  <input id="reg-confirmar" name="reg-confirmar" formControlName="confirmarSenha" type="password" placeholder="••••••••" autocomplete="new-password" />
                 </div>
               </div>
               <button class="btn-submit" type="submit" [disabled]="registerForm.invalid">

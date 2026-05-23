@@ -24,29 +24,29 @@
     </div>
 
     <form [formGroup]="form" class="form-grid">
-      <label class="field">
+      <label class="field" for="cli-nome">
         <span class="field-label">Nome <span class="required">*</span></span>
-        <input class="input" formControlName="nome" placeholder="Nome completo" />
+        <input id="cli-nome" name="cli-nome" class="input" formControlName="nome" placeholder="Nome completo" />
       </label>
-      <label class="field">
+      <label class="field" for="cli-email">
         <span class="field-label">E-mail <span class="required">*</span></span>
-        <input class="input" formControlName="email" type="email" placeholder="email@exemplo.com" />
+        <input id="cli-email" name="cli-email" class="input" formControlName="email" type="email" placeholder="email@exemplo.com" />
       </label>
-      <label class="field">
+      <label class="field" for="cli-telefone">
         <span class="field-label">Telefone <span class="required">*</span></span>
-        <input class="input" formControlName="telefone" placeholder="(00) 00000-0000" />
+        <input id="cli-telefone" name="cli-telefone" class="input" formControlName="telefone" placeholder="(00) 00000-0000" />
       </label>
-      <label class="field">
+      <label class="field" for="cli-cpf">
         <span class="field-label">CPF <span class="required">*</span></span>
-        <input class="input" formControlName="cpf" placeholder="000.000.000-00" />
+        <input id="cli-cpf" name="cli-cpf" class="input" formControlName="cpf" placeholder="000.000.000-00" />
       </label>
-      <label class="field field--wide">
+      <label class="field field--wide" for="cli-endereco">
         <span class="field-label">Endereço <span class="required">*</span></span>
-        <input class="input" formControlName="endereco" placeholder="Rua, número, bairro, cidade" />
+        <input id="cli-endereco" name="cli-endereco" class="input" formControlName="endereco" placeholder="Rua, número, bairro, cidade" />
       </label>
-      <label class="field">
+      <label class="field" for="cli-senha">
         <span class="field-label">Senha <span class="required">*</span></span>
-        <input class="input" formControlName="senha" type="password" placeholder="Senha de acesso do cliente" />
+        <input id="cli-senha" name="cli-senha" class="input" formControlName="senha" type="password" placeholder="Senha de acesso do cliente" autocomplete="new-password" />
       </label>
     </form>
 

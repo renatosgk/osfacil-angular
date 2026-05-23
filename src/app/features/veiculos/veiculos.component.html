@@ -5,28 +5,36 @@
 
 <section class="space-y-4">
   <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-    <form [formGroup]="form" class="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-      <label class="grid gap-1"
-        ><span class="text-sm">Placa</span><input class="input" formControlName="placa"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Modelo</span><input class="input" formControlName="modelo"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Marca</span><input class="input" formControlName="marca"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Ano</span><input class="input" type="number" formControlName="ano"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Cliente</span
-        ><select class="input" formControlName="clienteId">
+    <form [formGroup]="form" class="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+      <label class="grid gap-1">
+        <span class="text-sm">Placa <span class="text-rose-500">*</span></span>
+        <input class="input" formControlName="placa" placeholder="ABC-1234" />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Modelo <span class="text-rose-500">*</span></span>
+        <input class="input" formControlName="modelo" placeholder="Civic, Gol..." />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Marca <span class="text-rose-500">*</span></span>
+        <input class="input" formControlName="marca" placeholder="Honda, VW..." />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Cor <span class="text-rose-500">*</span></span>
+        <input class="input" formControlName="cor" placeholder="Prata, Preto..." />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Ano <span class="text-rose-500">*</span></span>
+        <input class="input" type="number" formControlName="ano" placeholder="2024" />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Cliente <span class="text-rose-500">*</span></span>
+        <select class="input" formControlName="clienteId">
           <option [ngValue]="null">Selecione</option>
           @for (cliente of clientes; track cliente.id) {
             <option [ngValue]="cliente.id">{{ cliente.nome }}</option>
           }
-        </select></label
-      >
+        </select>
+      </label>
     </form>
     <div class="mt-3 flex gap-2">
       <button class="btn-primary" (click)="save()" [disabled]="form.invalid" type="button">

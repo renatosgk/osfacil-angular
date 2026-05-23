@@ -29,8 +29,9 @@ export class VeiculosComponent {
   readonly form = this.fb.group({
     placa: ['', Validators.required],
     modelo: ['', Validators.required],
-    marca: [''],
-    ano: [2026],
+    marca: ['', Validators.required],
+    cor: ['', Validators.required],
+    ano: [2026, Validators.required],
     clienteId: [null as number | null, Validators.required],
   });
 
@@ -70,6 +71,7 @@ export class VeiculosComponent {
       placa: String(item.placa ?? ''),
       modelo: String(item.modelo ?? ''),
       marca: String(item.marca ?? ''),
+      cor: String(item.cor ?? ''),
       ano: Number(item.ano ?? 2026),
       clienteId: Number(item.clienteId ?? item['cliente_id'] ?? 0),
     });
@@ -109,6 +111,6 @@ export class VeiculosComponent {
 
   resetForm(): void {
     this.editingId = null;
-    this.form.reset({ ano: 2026, clienteId: null });
+    this.form.reset({ ano: 2026, clienteId: null, placa: '', modelo: '', marca: '', cor: '' });
   }
 }

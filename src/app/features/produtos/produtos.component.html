@@ -1,29 +1,27 @@
 <section class="mb-3">
   <h2 class="text-2xl font-bold">Produtos</h2>
-  <p class="text-sm text-slate-600">Cadastro de pecas e materiais.</p>
+  <p class="text-sm text-slate-600">Cadastro de peças e materiais.</p>
 </section>
 
 <section class="space-y-4">
   <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-    <form [formGroup]="form" class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-      <label class="grid gap-1"
-        ><span class="text-sm">Nome</span><input class="input" formControlName="nome"
-      /></label>
-      <label class="grid gap-1 md:col-span-2"
-        ><span class="text-sm">Descricao</span><input class="input" formControlName="descricao"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Valor</span
-        ><input class="input" type="number" formControlName="valor"
-      /></label>
-      <label class="grid gap-1"
-        ><span class="text-sm">Estoque</span
-        ><input class="input" type="number" formControlName="estoque"
-      /></label>
+    <form [formGroup]="form" class="grid gap-3 md:grid-cols-3">
+      <label class="grid gap-1">
+        <span class="text-sm">Nome <span class="text-rose-500">*</span></span>
+        <input class="input" formControlName="nome" placeholder="Ex: Óleo de motor" />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Preço (R$) <span class="text-rose-500">*</span></span>
+        <input class="input" type="number" step="0.01" min="0.01" formControlName="preco" placeholder="0,00" />
+      </label>
+      <label class="grid gap-1">
+        <span class="text-sm">Quantidade em estoque <span class="text-rose-500">*</span></span>
+        <input class="input" type="number" min="0" formControlName="quantidade" placeholder="0" />
+      </label>
     </form>
     <div class="mt-3 flex gap-2">
       <button class="btn-primary" (click)="save()" [disabled]="form.invalid" type="button">
-        Salvar
+        {{ editingId ? 'Atualizar' : 'Cadastrar' }}
       </button>
       <button class="btn-ghost" (click)="resetForm()" type="button">Limpar</button>
     </div>
@@ -35,9 +33,9 @@
         <tr>
           <th class="px-3 py-2">ID</th>
           <th class="px-3 py-2">Nome</th>
-          <th class="px-3 py-2">Valor</th>
+          <th class="px-3 py-2">Preço</th>
           <th class="px-3 py-2">Estoque</th>
-          <th class="px-3 py-2">Acoes</th>
+          <th class="px-3 py-2">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -45,8 +43,8 @@
           <tr class="border-t border-slate-100">
             <td class="px-3 py-2">{{ item.id }}</td>
             <td class="px-3 py-2">{{ item.nome }}</td>
-            <td class="px-3 py-2">{{ item.valor | currency: 'BRL' }}</td>
-            <td class="px-3 py-2">{{ item.estoque }}</td>
+            <td class="px-3 py-2">{{ item.preco | currency: 'BRL' }}</td>
+            <td class="px-3 py-2">{{ item.quantidade }}</td>
             <td class="px-3 py-2">
               <div class="flex gap-2">
                 <button class="btn-ghost" (click)="edit(item)" type="button">Editar</button>
@@ -59,6 +57,11 @@
                 </button>
               </div>
             </td>
+          </tr>
+        }
+        @if (produtos.length === 0) {
+          <tr>
+            <td colspan="5" class="px-3 py-4 text-center text-slate-400">Nenhum produto cadastrado.</td>
           </tr>
         }
       </tbody>

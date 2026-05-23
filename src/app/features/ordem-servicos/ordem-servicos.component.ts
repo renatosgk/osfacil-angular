@@ -37,10 +37,12 @@ export class OrdemServicosComponent {
 
   readonly form = this.fb.group({
     clienteId: [null as number | null, Validators.required],
-    veiculoId: [null as number | null, Validators.required],
-    funcionarioId: [null as number | null, Validators.required],
+    veiculoId: [null as number | null],
+    funcionarioId: [null as number | null],
     descricao: ['', Validators.required],
-    status: ['ABERTA', Validators.required],
+    statusOrdemServico: ['ABERTA', Validators.required],
+    statusPagamento: ['PENDENTE', Validators.required],
+    valor: [null as number | null, [Validators.required, Validators.min(0.01)]],
     observacao: [''],
   });
 
@@ -78,7 +80,7 @@ export class OrdemServicosComponent {
     const clienteBusca = String(this.filtroForm.value.cliente ?? '').toLowerCase();
 
     this.filteredOrdens = this.ordens.filter((ordem) => {
-      const ordemStatus = String(ordem.status ?? '').toLowerCase();
+      const ordemStatus = String(ordem.statusOrdemServico ?? ordem.status ?? '').toLowerCase();
       const clienteNome = this.getClienteNome(
         Number(ordem.clienteId ?? ordem['cliente_id'] ?? 0),
       ).toLowerCase();
@@ -101,8 +103,8 @@ export class OrdemServicosComponent {
     return `${veiculo.marca ?? ''} ${veiculo.modelo ?? ''} - ${veiculo.placa ?? ''}`.trim();
   }
 
-  getStatusLabel(status: unknown): string {
-    return String(status ?? 'ABERTA');
+  getStatusLabel(item: OrdemServico): string {
+    return String(item.statusOrdemServico ?? item.status ?? 'ABERTA');
   }
 
   getClienteId(item: OrdemServico): number | undefined {
@@ -117,10 +119,12 @@ export class OrdemServicosComponent {
     this.editingId = item.id ?? null;
     this.form.patchValue({
       clienteId: Number(item.clienteId ?? item['cliente_id'] ?? 0),
-      veiculoId: Number(item.veiculoId ?? item['veiculo_id'] ?? 0),
-      funcionarioId: Number(item.funcionarioId ?? item['funcionario_id'] ?? 0),
+      veiculoId: Number(item.veiculoId ?? item['veiculo_id'] ?? 0) || null,
+      funcionarioId: Number(item.funcionarioId ?? item['funcionario_id'] ?? 0) || null,
       descricao: String(item.descricao ?? ''),
-      status: String(item.status ?? 'ABERTA'),
+      statusOrdemServico: String(item.statusOrdemServico ?? item.status ?? 'ABERTA'),
+      statusPagamento: String(item.statusPagamento ?? 'PENDENTE'),
+      valor: item.valor ?? null,
       observacao: String(item.observacao ?? ''),
     });
   }
@@ -128,7 +132,14 @@ export class OrdemServicosComponent {
   save(): void {
     if (this.form.invalid) return;
 
-    const payload = this.form.getRawValue();
+    const raw = this.form.getRawValue();
+    const payload = {
+      clienteId: raw.clienteId,
+      statusOrdemServico: raw.statusOrdemServico,
+      descricao: raw.descricao,
+      statusPagamento: raw.statusPagamento,
+      valor: raw.valor,
+    };
     const request = this.editingId
       ? this.service.update(this.editingId, payload)
       : this.service.create(payload);
@@ -159,6 +170,14 @@ export class OrdemServicosComponent {
 
   resetForm(): void {
     this.editingId = null;
-    this.form.reset({ status: 'ABERTA', clienteId: null, veiculoId: null, funcionarioId: null });
+    this.form.reset({
+      statusOrdemServico: 'ABERTA',
+      statusPagamento: 'PENDENTE',
+      clienteId: null,
+      veiculoId: null,
+      funcionarioId: null,
+      valor: null,
+      observacao: '',
+    });
   }
 }

@@ -18,14 +18,20 @@ export interface Cliente extends ApiEntity {
 export interface Funcionario extends ApiEntity {
   nome?: string;
   email?: string;
+  cpf?: string;
+  login?: string;
+  role?: string;
+  salario?: number;
   telefone?: string;
   cargo?: string;
+  especialidade?: string;
 }
 
 export interface Veiculo extends ApiEntity {
   placa?: string;
   modelo?: string;
   marca?: string;
+  cor?: string;
   ano?: number;
   clienteId?: number;
   cliente_id?: number;
@@ -40,16 +46,18 @@ export interface OrdemServico extends ApiEntity {
   funcionario_id?: number;
   descricao?: string;
   status?: OrdemServicoStatus | string;
+  statusOrdemServico?: OrdemServicoStatus | string;
+  statusPagamento?: PagamentoStatus | string;
   observacao?: string;
+  valor?: number;
   valorTotal?: number;
   valor_total?: number;
 }
 
 export interface Produto extends ApiEntity {
   nome?: string;
-  descricao?: string;
-  valor?: number;
-  estoque?: number;
+  preco?: number;
+  quantidade?: number;
 }
 
 export interface ItemProduto extends ApiEntity {

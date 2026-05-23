@@ -15,6 +15,12 @@ export function parseApiError(error: unknown): string {
   if (apiError && typeof apiError === 'object') {
     const errorObj = apiError as Record<string, unknown>;
 
+    // Chave customizada do backend: {"erro": "mensagem"}
+    const erro = errorObj['erro'];
+    if (typeof erro === 'string') {
+      return erro;
+    }
+
     const message = errorObj['message'];
     if (typeof message === 'string') {
       return message;
@@ -55,6 +61,14 @@ export function parseApiError(error: unknown): string {
           return firstMessage;
         }
       }
+    }
+
+    // Mapa campo→mensagem do Spring @Valid (422): {"cpf": "cpf inválido", "telefone": "..."}
+    const fieldErrors = Object.entries(errorObj)
+      .filter(([, v]) => typeof v === 'string')
+      .map(([campo, msg]) => `${campo}: ${msg}`);
+    if (fieldErrors.length > 0) {
+      return fieldErrors.join(' | ');
     }
   }
 

@@ -24,8 +24,11 @@ export class FuncionariosComponent {
   readonly form = this.fb.group({
     nome: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    telefone: [''],
-    cargo: [''],
+    cpf: ['', Validators.required],
+    login: ['', Validators.required],
+    senha: ['', Validators.required],
+    salario: [null as number | null, [Validators.required, Validators.min(0.01)]],
+    role: ['ROLE_FUNCIONARIO', Validators.required],
   });
 
   constructor() {
@@ -44,15 +47,22 @@ export class FuncionariosComponent {
     this.form.patchValue({
       nome: String(item.nome ?? ''),
       email: String(item.email ?? ''),
-      telefone: String(item.telefone ?? ''),
-      cargo: String(item.cargo ?? ''),
+      cpf: String(item.cpf ?? ''),
+      login: String(item.login ?? ''),
+      senha: '',
+      salario: item.salario ?? null,
+      role: String(item.role ?? 'ROLE_FUNCIONARIO'),
     });
   }
 
   save(): void {
     if (this.form.invalid) return;
 
-    const payload = this.form.getRawValue();
+    const raw = this.form.getRawValue();
+    const payload = {
+      ...raw,
+      cpf: (raw.cpf ?? '').replace(/\D/g, ''),
+    };
     const request = this.editingId
       ? this.service.update(this.editingId, payload)
       : this.service.create(payload);
@@ -83,6 +93,6 @@ export class FuncionariosComponent {
 
   resetForm(): void {
     this.editingId = null;
-    this.form.reset();
+    this.form.reset({ role: 'ROLE_FUNCIONARIO', salario: null });
   }
 }

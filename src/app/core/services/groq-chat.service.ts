@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { API_BASE_URL } from '../constants/api.constants';
 
@@ -42,14 +42,11 @@ export class GroqChatService {
           ]);
           this.isLoading.set(false);
         },
-        error: () => {
+        error: (err: HttpErrorResponse) => {
+          const msg = err?.error?.erro ?? err?.error?.message ?? 'Erro ao conectar com o assistente. Tente novamente.';
           this.messages.update(msgs => [
             ...msgs,
-            {
-              role: 'assistant',
-              content: 'Erro ao conectar com o assistente. Tente novamente.',
-              timestamp: new Date(),
-            },
+            { role: 'assistant', content: msg, timestamp: new Date() },
           ]);
           this.isLoading.set(false);
         },
