@@ -143,7 +143,7 @@
           @for (item of filteredOrdens; track item.id) {
             <tr>
               <td class="text-muted os-id">#{{ item.id }}</td>
-              <td class="font-medium">{{ getClienteNome(getClienteId(item)) }}</td>
+              <td class="font-medium">{{ item.nomeCliente || getClienteNome(getClienteId(item)) }}</td>
               <td>{{ getVeiculoDesc(getVeiculoId(item)) }}</td>
               <td class="descricao-truncate">{{ item.descricao }}</td>
               <td><app-status-badge [label]="getStatusLabel(item)" /></td>

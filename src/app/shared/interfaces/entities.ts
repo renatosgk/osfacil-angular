@@ -39,6 +39,7 @@ export interface Veiculo extends ApiEntity {
 
 export interface OrdemServico extends ApiEntity {
   clienteId?: number;
+  nomeCliente?: string;
   veiculoId?: number;
   funcionarioId?: number;
   cliente_id?: number;

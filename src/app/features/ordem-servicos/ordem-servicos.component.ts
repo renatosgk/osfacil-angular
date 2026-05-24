@@ -66,7 +66,11 @@ export class OrdemServicosComponent {
   }
 
   load(): void {
-    this.service.listMinhas().subscribe({
+    const request$ = this.auth.isStaff()
+      ? this.service.list()
+      : this.service.listMinhas();
+
+    request$.subscribe({
       next: (items) => {
         this.ordens = items;
         this.applyFilter();
@@ -81,8 +85,8 @@ export class OrdemServicosComponent {
 
     this.filteredOrdens = this.ordens.filter((ordem) => {
       const ordemStatus = String(ordem.statusOrdemServico ?? ordem.status ?? '').toLowerCase();
-      const clienteNome = this.getClienteNome(
-        Number(ordem.clienteId ?? ordem['cliente_id'] ?? 0),
+      const clienteNome = (
+        ordem.nomeCliente ?? this.getClienteNome(Number(ordem.clienteId ?? ordem['cliente_id'] ?? 0))
       ).toLowerCase();
 
       const statusMatches = !status || ordemStatus.includes(status);
