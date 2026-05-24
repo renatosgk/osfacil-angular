@@ -42,6 +42,7 @@ export interface OrdemServico extends ApiEntity {
   nomeCliente?: string;
   veiculoId?: number;
   funcionarioId?: number;
+  nomeResponsavel?: string;
   cliente_id?: number;
   veiculo_id?: number;
   funcionario_id?: number;

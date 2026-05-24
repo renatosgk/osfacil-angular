@@ -39,15 +39,17 @@
         </select>
       </label>
 
-      <label class="field">
-        <span class="field-label">Responsável <span class="required">*</span></span>
-        <select class="input" formControlName="funcionarioId">
-          <option [ngValue]="null">Selecione o funcionário</option>
-          @for (item of funcionarios; track item.id) {
-            <option [ngValue]="item.id">{{ item.nome }}</option>
-          }
-        </select>
-      </label>
+      @if (auth.isStaff()) {
+        <label class="field">
+          <span class="field-label">Responsável</span>
+          <select class="input" formControlName="funcionarioId">
+            <option [ngValue]="null">Selecione o funcionário</option>
+            @for (item of funcionarios; track item.id) {
+              <option [ngValue]="item.id">{{ item.nome }}</option>
+            }
+          </select>
+        </label>
+      }
 
       <label class="field">
         <span class="field-label">Status da OS <span class="required">*</span></span>
@@ -133,7 +135,8 @@
           <tr>
             <th>OS</th>
             <th>Cliente</th>
-            <th>Veículo</th>
+            <th>Responsável</th>
+            <th>Valor</th>
             <th>Descrição</th>
             <th>Status</th>
             <th>Ações</th>
@@ -144,7 +147,8 @@
             <tr>
               <td class="text-muted os-id">#{{ item.id }}</td>
               <td class="font-medium">{{ item.nomeCliente || getClienteNome(getClienteId(item)) }}</td>
-              <td>{{ getVeiculoDesc(getVeiculoId(item)) }}</td>
+              <td class="text-muted">{{ item.nomeResponsavel || '—' }}</td>
+              <td>{{ item.valor != null ? (item.valor | currency:'BRL') : '—' }}</td>
               <td class="descricao-truncate">{{ item.descricao }}</td>
               <td><app-status-badge [label]="getStatusLabel(item)" /></td>
               <td>
@@ -158,7 +162,7 @@
           }
           @if (filteredOrdens.length === 0) {
             <tr>
-              <td colspan="6" class="empty-row">Nenhuma ordem de serviço encontrada.</td>
+              <td colspan="7" class="empty-row">Nenhuma ordem de serviço encontrada.</td>
             </tr>
           }
         </tbody>

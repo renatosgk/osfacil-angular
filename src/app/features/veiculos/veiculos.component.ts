@@ -46,12 +46,26 @@ export class VeiculosComponent {
         next: (items) => (this.clientes = items),
         error: (error) => this.notification.error(parseApiError(error)),
       });
+    } else {
+      // CLIENTE: preenche clienteId automaticamente com o próprio ID
+      const myId = this.auth.currentUser()?.id ?? null;
+      if (myId) this.form.patchValue({ clienteId: myId });
     }
   }
 
   load(): void {
     this.service.list().subscribe({
-      next: (items) => (this.veiculos = items),
+      next: (items) => {
+        if (this.auth.isCliente()) {
+          // Mostra só os veículos do próprio cliente
+          const myId = this.auth.currentUser()?.id;
+          this.veiculos = myId
+            ? items.filter((v) => Number(v.clienteId ?? v['cliente_id']) === myId)
+            : items;
+        } else {
+          this.veiculos = items;
+        }
+      },
       error: (error) => this.notification.error(parseApiError(error)),
     });
   }

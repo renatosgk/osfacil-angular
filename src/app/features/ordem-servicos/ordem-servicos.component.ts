@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ import { parseApiError } from '../../shared/utils/http-error.util';
 @Component({
   selector: 'app-ordem-servicos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, StatusBadgeComponent],
+  imports: [CommonModule, CurrencyPipe, ReactiveFormsModule, RouterLink, StatusBadgeComponent],
   templateUrl: './ordem-servicos.component.html',
   styleUrl: './ordem-servicos.component.scss',
 })
@@ -137,13 +137,16 @@ export class OrdemServicosComponent {
     if (this.form.invalid) return;
 
     const raw = this.form.getRawValue();
-    const payload = {
+    const payload: Record<string, unknown> = {
       clienteId: raw.clienteId,
       statusOrdemServico: raw.statusOrdemServico,
       descricao: raw.descricao,
       statusPagamento: raw.statusPagamento,
       valor: raw.valor,
     };
+    if (raw.funcionarioId != null) {
+      payload['funcionarioId'] = raw.funcionarioId;
+    }
     const request = this.editingId
       ? this.service.update(this.editingId, payload)
       : this.service.create(payload);

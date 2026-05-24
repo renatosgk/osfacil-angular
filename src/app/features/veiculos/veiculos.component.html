@@ -26,15 +26,17 @@
         <span class="text-sm">Ano <span class="text-rose-500">*</span></span>
         <input class="input" type="number" formControlName="ano" placeholder="2024" />
       </label>
-      <label class="grid gap-1">
-        <span class="text-sm">Cliente <span class="text-rose-500">*</span></span>
-        <select class="input" formControlName="clienteId">
-          <option [ngValue]="null">Selecione</option>
-          @for (cliente of clientes; track cliente.id) {
-            <option [ngValue]="cliente.id">{{ cliente.nome }}</option>
-          }
-        </select>
-      </label>
+      @if (auth.isStaff()) {
+        <label class="grid gap-1">
+          <span class="text-sm">Cliente <span class="text-rose-500">*</span></span>
+          <select class="input" formControlName="clienteId">
+            <option [ngValue]="null">Selecione</option>
+            @for (cliente of clientes; track cliente.id) {
+              <option [ngValue]="cliente.id">{{ cliente.nome }}</option>
+            }
+          </select>
+        </label>
+      }
     </form>
     <div class="mt-3 flex gap-2">
       <button class="btn-primary" (click)="save()" [disabled]="form.invalid" type="button">
