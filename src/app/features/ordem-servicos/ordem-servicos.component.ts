@@ -61,6 +61,9 @@ export class OrdemServicosComponent {
     if (this.auth.isStaff()) {
       this.clienteService.list().subscribe({ next: (items) => (this.clientes = items) });
       this.funcionarioService.list().subscribe({ next: (items) => (this.funcionarios = items) });
+    } else {
+      this.form.controls.clienteId.clearValidators();
+      this.form.controls.clienteId.updateValueAndValidity();
     }
     this.veiculoService.list().subscribe({ next: (items) => (this.veiculos = items) });
   }

@@ -19,15 +19,17 @@
     </div>
 
     <form [formGroup]="form" class="form-grid">
-      <label class="field">
-        <span class="field-label">Cliente <span class="required">*</span></span>
-        <select class="input" formControlName="clienteId">
-          <option [ngValue]="null">Selecione o cliente</option>
-          @for (item of clientes; track item.id) {
-            <option [ngValue]="item.id">{{ item.nome }}</option>
-          }
-        </select>
-      </label>
+      @if (auth.isStaff()) {
+        <label class="field">
+          <span class="field-label">Cliente <span class="required">*</span></span>
+          <select class="input" formControlName="clienteId">
+            <option [ngValue]="null">Selecione o cliente</option>
+            @for (item of clientes; track item.id) {
+              <option [ngValue]="item.id">{{ item.nome }}</option>
+            }
+          </select>
+        </label>
+      }
 
       <label class="field">
         <span class="field-label">Veículo <span class="required">*</span></span>
