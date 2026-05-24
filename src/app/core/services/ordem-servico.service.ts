@@ -17,11 +17,14 @@ export class OrdemServicoService extends BaseCrudService<OrdemServico> {
   listMinhas(): Observable<OrdemServico[]> {
     return this.http.get<any>(`${this.baseUrl}/ordem-servicos/minhas`).pipe(
       map((r) => {
+        if (Array.isArray(r)) return r as OrdemServico[];
         if (r?._embedded) {
           const key = Object.keys(r._embedded)[0];
-          return (r._embedded[key] ?? []) as OrdemServico[];
+          const value = r._embedded[key];
+          return (Array.isArray(value) ? value : []) as OrdemServico[];
         }
-        return Array.isArray(r) ? r : [];
+        if (r?.content && Array.isArray(r.content)) return r.content as OrdemServico[];
+        return [];
       })
     );
   }
