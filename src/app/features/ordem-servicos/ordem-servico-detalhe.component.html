@@ -187,12 +187,9 @@
         @for (pag of pagamentos; track pag.id) {
           <div class="pag-row">
             <div class="pag-info">
-              <span class="pag-metodo">{{ pag.metodo }}</span>
+              <span class="pag-metodo">{{ pag.formaPagamento }}</span>
               <span class="pag-valor">{{ pag.valor | currency: 'BRL' }}</span>
             </div>
-            <span class="pag-status" [class]="'pag-' + (pag.status ?? 'PENDENTE').toLowerCase()">
-              {{ pag.status }}
-            </span>
           </div>
         }
         @if (pagamentos.length === 0) {
