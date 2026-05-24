@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ClienteService } from '../../core/services/cliente.service';
 import { FuncionarioService } from '../../core/services/funcionario.service';
 import { OrdemServicoService } from '../../core/services/ordem-servico.service';
@@ -52,21 +53,21 @@ export class DashboardComponent {
 
   constructor() {
     forkJoin({
-      clientes: this.clienteService.list(),
-      funcionarios: this.funcionarioService.list(),
-      produtos: this.produtoService.list(),
-      ordens: this.ordemService.list(),
+      clientes:     this.clienteService.list().pipe(catchError(() => of([]))),
+      funcionarios: this.funcionarioService.list().pipe(catchError(() => of([]))),
+      produtos:     this.produtoService.list().pipe(catchError(() => of([]))),
+      ordens:       this.ordemService.listMinhas().pipe(catchError(() => of([]))),
     }).subscribe(({ clientes, funcionarios, produtos, ordens }) => {
       this.cards = [
-        { label: 'Clientes', value: clientes.length },
-        { label: 'Funcionarios', value: funcionarios.length },
-        { label: 'Produtos', value: produtos.length },
-        { label: 'Ordens de Servico', value: ordens.length },
+        { label: 'Clientes',          value: clientes.length },
+        { label: 'Funcionários',      value: funcionarios.length },
+        { label: 'Produtos',          value: produtos.length },
+        { label: 'Ordens de Serviço', value: ordens.length },
       ];
 
       const statusCount = new Map<string, number>();
       ordens.forEach((ordem) => {
-        const key = String(ordem.status ?? 'Aberta');
+        const key = String(ordem.statusOrdemServico ?? ordem.status ?? 'ABERTA');
         statusCount.set(key, (statusCount.get(key) ?? 0) + 1);
       });
 
