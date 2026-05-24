@@ -67,9 +67,8 @@ export class OrdemServicoDetalheComponent {
   });
 
   readonly pagamentoForm = this.fb.group({
-    metodo: ['PIX', Validators.required],
-    valor: [0, [Validators.required, Validators.min(0.01)]],
-    status: ['PENDENTE', Validators.required],
+    formaPagamento: ['PIX', Validators.required],
+    valor: [null as number | null, [Validators.required, Validators.min(0.01)]],
   });
 
   constructor() {
@@ -123,11 +122,10 @@ export class OrdemServicoDetalheComponent {
 
     const payload = {
       clienteId: Number(this.ordem.clienteId ?? this.ordem['cliente_id'] ?? 0) || null,
-      veiculoId: Number(this.ordem.veiculoId ?? this.ordem['veiculo_id'] ?? 0) || null,
-      funcionarioId: Number(this.ordem.funcionarioId ?? this.ordem['funcionario_id'] ?? 0) || null,
+      statusOrdemServico: status,
       descricao: this.ordem.descricao ?? '',
-      observacao: this.ordem.observacao ?? '',
-      status,
+      statusPagamento: this.ordem.statusPagamento ?? 'PENDENTE',
+      valor: this.ordem.valor ?? 0,
     };
 
     this.ordemService.update(this.ordemId, payload).subscribe({
@@ -207,12 +205,13 @@ export class OrdemServicoDetalheComponent {
   addPagamento(): void {
     if (this.pagamentoForm.invalid || !this.ordemId) return;
 
-    const payload = { ...this.pagamentoForm.getRawValue(), ordemServicoId: this.ordemId };
+    const raw = this.pagamentoForm.getRawValue();
+    const payload = { formaPagamento: raw.formaPagamento, valor: raw.valor };
     this.pagamentoService.create(payload).subscribe({
       next: () => {
         this.notification.success('Pagamento registrado.');
         this.historico.unshift({ texto: 'Pagamento registrado na OS.', hora: new Date() });
-        this.pagamentoForm.reset({ metodo: 'PIX', valor: 0, status: 'PENDENTE' });
+        this.pagamentoForm.reset({ formaPagamento: 'PIX', valor: null });
         this.loadAll();
       },
       error: (error) => this.notification.error(parseApiError(error)),
