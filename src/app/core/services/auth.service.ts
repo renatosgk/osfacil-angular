@@ -7,6 +7,7 @@ import { StorageService } from './storage.service';
 
 type AuthApiResponse = AuthResponse & {
   tokenAcesso?: string;
+  id?: number;
   nome?: string;
   email?: string;
   role?: string;
@@ -61,7 +62,7 @@ export class AuthService {
         this.storageService.setToken(token);
         const userData = response.usuario
           ? { ...response.usuario, role: response.role }
-          : { nome: response.nome, email: response.email, role: response.role };
+          : { id: response.id, nome: response.nome, email: response.email, role: response.role };
 
         this.storageService.setUser(userData);
         this._role.set(response.role ?? null);

@@ -47,9 +47,10 @@ export class VeiculosComponent {
         error: (error) => this.notification.error(parseApiError(error)),
       });
     } else {
-      // CLIENTE: preenche clienteId automaticamente com o próprio ID
-      const myId = this.auth.currentUser()?.id ?? null;
-      if (myId) this.form.patchValue({ clienteId: myId });
+      // CLIENTE: backend preenche clienteId automaticamente pelo token.
+      // Remove o required para não bloquear o botão.
+      this.form.controls.clienteId.clearValidators();
+      this.form.controls.clienteId.updateValueAndValidity();
     }
   }
 
