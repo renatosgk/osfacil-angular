@@ -9,7 +9,6 @@
   overflow: hidden;
 }
 
-/* Header */
 .chat-header {
   display: flex;
   align-items: center;
@@ -73,7 +72,6 @@
   }
 }
 
-/* Messages */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -167,7 +165,6 @@
   margin-top: 0.375rem;
 }
 
-/* Typing indicator */
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -195,7 +192,6 @@
   30% { transform: translateY(-6px); opacity: 1; }
 }
 
-/* Input */
 .chat-input-area {
   flex-shrink: 0;
   padding: 1rem 1.25rem;

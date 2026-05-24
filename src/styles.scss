@@ -8,8 +8,6 @@ body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* ── Inputs & Buttons ──────────────────────────────────── */
-
 .input {
   width: 100%;
   border-radius: 10px;
@@ -86,8 +84,6 @@ body {
   font-size: 0.8125rem;
 }
 
-/* ── Page Layout ───────────────────────────────────────── */
-
 .page-header {
   display: flex;
   align-items: flex-start;
@@ -108,8 +104,6 @@ body {
   color: #64748b;
   margin: 0.25rem 0 0;
 }
-
-/* ── Cards ─────────────────────────────────────────────── */
 
 .card {
   background: #fff;
@@ -141,8 +135,6 @@ body {
   gap: 0.625rem;
   padding: 1rem 1.375rem 1.375rem;
 }
-
-/* ── Forms ─────────────────────────────────────────────── */
 
 .form-grid {
   display: grid;
@@ -176,8 +168,6 @@ body {
   min-width: 220px;
   max-width: 320px;
 }
-
-/* ── Tables ────────────────────────────────────────────── */
 
 .table-wrapper {
   overflow-x: auto;
@@ -233,8 +223,6 @@ body {
   font-size: 0.875rem;
 }
 
-/* ── Badge ─────────────────────────────────────────────── */
-
 .badge {
   display: inline-flex;
   align-items: center;
@@ -246,8 +234,6 @@ body {
   color: #475569;
   border: 1px solid #e2e8f0;
 }
-
-/* ── Cadastro com Mascote ───────────────────────────────── */
 
 .cadastro-header {
   align-items: flex-start;
@@ -269,8 +255,6 @@ body {
 
   &:hover { transform: scale(1.05) rotate(-2deg); }
 }
-
-/* ── Funcionário avatar na tabela ───────────────────────── */
 
 .func-nome-cell {
   display: flex;

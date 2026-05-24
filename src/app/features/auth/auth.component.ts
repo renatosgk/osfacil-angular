@@ -549,8 +549,6 @@ export class AuthComponent {
     this.activeTab.set(tabId);
   }
 
-  // ── Forms ────────────────────────────────────────────
-
   readonly loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     senha: ['', [Validators.required]],
@@ -589,8 +587,6 @@ export class AuthComponent {
     senha: ['', [Validators.required, Validators.minLength(6)]],
     confirmarSenha: ['', [Validators.required]],
   });
-
-  // ── Ações ────────────────────────────────────────────
 
   onLogin(): void {
     if (this.loginForm.invalid) return;
@@ -699,8 +695,6 @@ export class AuthComponent {
       error: (error) => this.notification.error(parseApiError(error)),
     });
   }
-
-  // ── Formatação de campos ─────────────────────────────
 
   onCpfInput(form: 'cliente' | 'funcionario' | 'admin'): void {
     const formMap = {

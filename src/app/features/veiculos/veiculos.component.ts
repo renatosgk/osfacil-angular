@@ -47,8 +47,6 @@ export class VeiculosComponent {
         error: (error) => this.notification.error(parseApiError(error)),
       });
     } else {
-      // CLIENTE: backend preenche clienteId automaticamente pelo token.
-      // Remove o required para não bloquear o botão.
       this.form.controls.clienteId.clearValidators();
       this.form.controls.clienteId.updateValueAndValidity();
     }
@@ -58,7 +56,6 @@ export class VeiculosComponent {
     this.service.list().subscribe({
       next: (items) => {
         if (this.auth.isCliente()) {
-          // Mostra só os veículos do próprio cliente
           const myId = this.auth.currentUser()?.id;
           this.veiculos = myId
             ? items.filter((v) => Number(v.clienteId ?? v['cliente_id']) === myId)
