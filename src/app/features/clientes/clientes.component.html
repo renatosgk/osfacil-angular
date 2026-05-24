@@ -39,6 +39,9 @@
       <label class="field" for="cli-cpf">
         <span class="field-label">CPF <span class="required">*</span></span>
         <input id="cli-cpf" name="cli-cpf" class="input" formControlName="cpf" placeholder="000.000.000-00" />
+        @if (form.controls.cpf.touched && form.controls.cpf.hasError('cpfInvalido')) {
+          <span class="text-rose-500 text-xs">CPF inválido. Verifique os dígitos.</span>
+        }
       </label>
       <label class="field field--wide" for="cli-endereco">
         <span class="field-label">Endereço <span class="required">*</span></span>

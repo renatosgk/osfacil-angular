@@ -71,13 +71,10 @@ export interface ItemProduto extends ApiEntity {
 }
 
 export interface Pagamento extends ApiEntity {
-  ordemServicoId?: number;
-  ordem_servico_id?: number;
-  metodo?: PagamentoMetodo | string;
   valor?: number;
-  status?: PagamentoStatus | string;
-  dataPagamento?: string;
-  data_pagamento?: string;
+  formaPagamento?: string;
+  clienteId?: number;
+  nomeCliente?: string;
 }
 
 export interface LoginPayload {

@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClienteService } from '../../core/services/cliente.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { Cliente } from '../../shared/interfaces/entities';
+import { cpfValidator } from '../../shared/validators/cpf.validator';
 import { parseApiError } from '../../shared/utils/http-error.util';
 
 @Component({
@@ -26,7 +27,7 @@ export class ClientesComponent {
     nome: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     telefone: ['', Validators.required],
-    cpf: ['', Validators.required],
+    cpf: ['', [Validators.required, cpfValidator]],
     endereco: ['', Validators.required],
     senha: ['', Validators.required],
   });

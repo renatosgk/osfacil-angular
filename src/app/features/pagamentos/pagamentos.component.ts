@@ -2,9 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/services/notification.service';
-import { OrdemServicoService } from '../../core/services/ordem-servico.service';
 import { PagamentoService } from '../../core/services/pagamento.service';
-import { OrdemServico, Pagamento } from '../../shared/interfaces/entities';
+import { Pagamento } from '../../shared/interfaces/entities';
 import { parseApiError } from '../../shared/utils/http-error.util';
 
 @Component({
@@ -16,29 +15,19 @@ import { parseApiError } from '../../shared/utils/http-error.util';
 })
 export class PagamentosComponent {
   private readonly service = inject(PagamentoService);
-  private readonly ordemService = inject(OrdemServicoService);
   private readonly fb = inject(FormBuilder);
   private readonly notification = inject(NotificationService);
 
   pagamentos: Pagamento[] = [];
-  ordens: OrdemServico[] = [];
   editingId: number | null = null;
 
   readonly form = this.fb.group({
-    ordemServicoId: [null as number | null, Validators.required],
-    metodo: ['PIX', Validators.required],
-    valor: [0, Validators.required],
-    status: ['PENDENTE', Validators.required],
-    dataPagamento: [''],
+    formaPagamento: ['PIX', Validators.required],
+    valor: [null as number | null, [Validators.required, Validators.min(0.01)]],
   });
 
   constructor() {
-    this.loadAll();
-  }
-
-  loadAll(): void {
     this.load();
-    this.ordemService.list().subscribe({ next: (items) => (this.ordens = items) });
   }
 
   load(): void {
@@ -51,11 +40,8 @@ export class PagamentosComponent {
   edit(item: Pagamento): void {
     this.editingId = item.id ?? null;
     this.form.patchValue({
-      ordemServicoId: Number(item.ordemServicoId ?? item['ordem_servico_id'] ?? 0),
-      metodo: String(item.metodo ?? 'PIX'),
-      valor: Number(item.valor ?? 0),
-      status: String(item.status ?? 'PENDENTE'),
-      dataPagamento: String(item.dataPagamento ?? item['data_pagamento'] ?? ''),
+      formaPagamento: String(item.formaPagamento ?? 'PIX'),
+      valor: item.valor ?? null,
     });
   }
 
@@ -93,12 +79,6 @@ export class PagamentosComponent {
 
   resetForm(): void {
     this.editingId = null;
-    this.form.reset({
-      ordemServicoId: null,
-      metodo: 'PIX',
-      valor: 0,
-      status: 'PENDENTE',
-      dataPagamento: '',
-    });
+    this.form.reset({ formaPagamento: 'PIX', valor: null });
   }
 }

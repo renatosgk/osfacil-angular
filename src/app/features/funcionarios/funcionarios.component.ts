@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FuncionarioService } from '../../core/services/funcionario.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { Funcionario } from '../../shared/interfaces/entities';
+import { cpfValidator } from '../../shared/validators/cpf.validator';
 import { parseApiError } from '../../shared/utils/http-error.util';
 
 @Component({
@@ -24,7 +25,7 @@ export class FuncionariosComponent {
   readonly form = this.fb.group({
     nome: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    cpf: ['', Validators.required],
+    cpf: ['', [Validators.required, cpfValidator]],
     login: ['', Validators.required],
     senha: ['', Validators.required],
     salario: [null as number | null, [Validators.required, Validators.min(0.01)]],

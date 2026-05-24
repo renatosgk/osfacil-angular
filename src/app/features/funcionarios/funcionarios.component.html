@@ -37,6 +37,9 @@
       <label class="field" for="func-cpf">
         <span class="field-label">CPF <span class="required">*</span></span>
         <input id="func-cpf" name="func-cpf" class="input" formControlName="cpf" placeholder="000.000.000-00" />
+        @if (form.controls.cpf.touched && form.controls.cpf.hasError('cpfInvalido')) {
+          <span class="text-rose-500 text-xs">CPF inválido. Verifique os dígitos.</span>
+        }
       </label>
 
       <label class="field" for="func-login">
