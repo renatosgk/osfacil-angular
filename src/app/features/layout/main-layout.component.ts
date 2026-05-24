@@ -196,6 +196,19 @@ import { computed } from '@angular/core';
         </nav>
 
         <div class="sidebar-footer">
+          <div style="padding:0.5rem 0.875rem 0.625rem; display:flex; align-items:center; gap:0.625rem;">
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(37,99,235,0.25);display:flex;align-items:center;justify-content:center;font-size:0.8125rem;font-weight:600;color:#93c5fd;flex-shrink:0;">
+              {{ (authService.currentUser()?.nome ?? '?')[0].toUpperCase() }}
+            </div>
+            <div style="min-width:0;">
+              <p style="margin:0;color:#e2e8f0;font-size:0.8125rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                {{ authService.currentUser()?.nome ?? 'Usuário' }}
+              </p>
+              <p style="margin:0;color:#64748b;font-size:0.6875rem;">
+                {{ authService.isCliente() ? 'Cliente' : authService.isAdmin() ? 'Admin' : 'Funcionário' }}
+              </p>
+            </div>
+          </div>
           <button class="btn-logout" (click)="logout()" type="button">Sair</button>
         </div>
       </aside>

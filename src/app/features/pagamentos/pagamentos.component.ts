@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NotificationService } from '../../core/services/notification.service';
+import { AuthService } from '../../core/services/auth.service';
 import { PagamentoService } from '../../core/services/pagamento.service';
 import { Pagamento } from '../../shared/interfaces/entities';
 import { parseApiError } from '../../shared/utils/http-error.util';
@@ -17,6 +18,7 @@ export class PagamentosComponent {
   private readonly service = inject(PagamentoService);
   private readonly fb = inject(FormBuilder);
   private readonly notification = inject(NotificationService);
+  readonly auth = inject(AuthService);
 
   pagamentos: Pagamento[] = [];
   editingId: number | null = null;

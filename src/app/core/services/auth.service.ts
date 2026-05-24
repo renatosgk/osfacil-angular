@@ -12,13 +12,23 @@ type AuthApiResponse = AuthResponse & {
   role?: string;
 };
 
+export interface CurrentUser {
+  id?: number;
+  nome?: string;
+  email?: string;
+  perfil?: string;
+  role?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly authenticated = signal(false);
   private readonly _role = signal<string | null>(null);
+  private readonly _currentUser = signal<CurrentUser | null>(null);
 
   readonly isAuthenticated = computed(() => this.authenticated());
   readonly userRole = this._role.asReadonly();
+  readonly currentUser = this._currentUser.asReadonly();
 
   readonly isCliente    = computed(() => this._role() === 'ROLE_CLIENTE');
   readonly isFuncionario = computed(() => this._role() === 'ROLE_FUNCIONARIO');
@@ -29,8 +39,9 @@ export class AuthService {
     private readonly http: HttpClient,
     private readonly storageService: StorageService
   ) {
-    const stored = this.storageService.getUser<{ role?: string }>();
+    const stored = this.storageService.getUser<CurrentUser>();
     this._role.set(stored?.role ?? null);
+    this._currentUser.set(stored ?? null);
     this.authenticated.set(!!this.storageService.getToken());
   }
 
@@ -54,6 +65,7 @@ export class AuthService {
 
         this.storageService.setUser(userData);
         this._role.set(response.role ?? null);
+        this._currentUser.set(userData as CurrentUser);
         this.authenticated.set(true);
       })
     );
