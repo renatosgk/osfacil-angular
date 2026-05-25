@@ -242,4 +242,8 @@ Projeto desenvolvido para a disciplina **Java Advanced — FIAP**
 
 **Aplicação em produção:** https://osfacil-angular.vercel.app
 
-**Vídeo de demonstração:** https://youtu.be/Yd9SBvOVWvY
+**Vídeo de demonstração java:** https://youtu.be/Yd9SBvOVWvY
+
+**Vídeo de demonstração mobile:** https://youtube.com/shorts/yStuXNV-Cj0
+
+
